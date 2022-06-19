@@ -17,8 +17,10 @@ class ProductControllerTest extends TestCase
      */
     public function test_index_product()
     {
-        Product::factory()->create(5);
-        $this->get("products")
+        Product::factory()
+            ->count(5)
+            ->create();
+        $this->get("api/products")
             ->assertSuccessful()
             ->assertJsonCount(5);
     }
@@ -26,7 +28,7 @@ class ProductControllerTest extends TestCase
     public function test_show_product()
     {
         $product = Product::factory()->create();
-        $this->get("products/$product->id")->assertSuccessful();
+        $this->get("api/products/$product->id")->assertSuccessful();
     }
 
     public function test_create_product()
@@ -36,7 +38,7 @@ class ProductControllerTest extends TestCase
             "price" => 1000,
         ];
 
-        $this->post("products", $data)->assertSuccessful();
+        $this->post("api/products", $data)->assertSuccessful();
         $this->assertDatabaseHas("products", $data);
     }
 
@@ -48,7 +50,7 @@ class ProductControllerTest extends TestCase
             "price" => 1000,
         ];
 
-        $this->put("products/$product->id", $data)->assertSuccessful();
+        $this->put("api/products/$product->id", $data)->assertSuccessful();
         $this->assertDatabaseHas("products", $data);
     }
 
@@ -56,7 +58,7 @@ class ProductControllerTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $this->delete("products/$product->id")->assertSuccessful();
+        $this->delete("api/products/$product->id")->assertSuccessful();
         $this->assertDatabaseMissing("products", $product->toArray());
     }
 }
