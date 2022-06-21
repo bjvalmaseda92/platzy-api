@@ -30,7 +30,7 @@ class ProductControllerTest extends TestCase
             ->create();
         $this->get("api/products")
             ->assertSuccessful()
-            ->assertJsonCount(5);
+            ->assertJsonCount(5, "data");
     }
 
     public function test_show_product()
