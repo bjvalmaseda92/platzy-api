@@ -1,0 +1,41 @@
+version: "3.1"
+
+services:
+    nginx:
+        image: nginx:stable-alpine
+        restart: unless-stopped
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./:/var/www/html
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
+            - postgres
+
+    postgres:
+        image: postgres
+        container_name: postgres_db
+        restart: unless-stopped
+        ports:
+            - 5432:5432
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        env_file:
+            - "./.env"
+        environment:
+            POSTGRES_USER: ${DB_USERNAME} # The PostgreSQL user (useful to connect to the database)
+            POSTGRES_PASSWORD: ${DB_PASSWORD} # The PostgreSQL password (useful to connect to the database)
+            POSTGRES_DB: ${DB_DATABASE} # The PostgreSQL default database (automatically created at first launch)
+
+    app:
+        image: ghcr.io/bjvalmaseda92/laravel-devenv:2.0
+        restart: unless-stopped #
+        volumes:
+            - ./:/var/www/html
+        expose:
+            - 9000
+
+volumes:
+    db-data:
