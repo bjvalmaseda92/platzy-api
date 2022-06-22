@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -17,6 +18,7 @@ class ProductControllerTest extends TestCase
     {
         parent::setUp();
         Sanctum::actingAs(User::factory()->create());
+        Category::factory()->create();
     }
     /**
      * A basic feature test example.
