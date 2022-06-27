@@ -20,6 +20,8 @@ class ProductTest extends TestCase
      */
     public function test_product_has_category()
     {
+        /** @var User $user */
+        $user = User::factory()->create();
         $category = Category::factory()->create();
         $product = Product::factory()->create(["category_id" => $category->id]);
         $this->assertInstanceOf(Category::class, $product->category);
