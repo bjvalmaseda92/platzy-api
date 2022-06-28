@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +24,7 @@ Route::apiResource("products", ProductController::class)->middleware(
 );
 
 Route::post("sanctum/token", LoginController::class);
+Route::post("/notification", [NotificationController::class, "send"]);
 
 Route::middleware("auth:sanctum")->get("/user", function (Request $request) {
     return $request->user();
